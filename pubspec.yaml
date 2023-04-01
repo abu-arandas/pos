@@ -1,0 +1,51 @@
+name: pos
+description: Simple Point of Sell Application
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_app_name: ^0.1.1
+  flutter_launcher_icons: ^0.11.0
+  get: ^4.6.5
+  sqflite: ^2.2.6
+  path: ^1.8.2
+  flutter_bootstrap: ^2.0.0
+  searchfield: ^0.7.5
+  url_launcher: ^6.1.10
+  intl: ^0.18.0
+  table_calendar: ^3.0.9
+  image_picker: ^0.8.7
+  checkbox_grouped: ^1.8.2
+  
+# App Name
+flutter_app_name:
+  name: 'Arandas POS'
+
+# App Image
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: 'assets/images/logo.png'
+  min_sdk_android: 21
+  adaptive_icon_background: '#17181f'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/products/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
