@@ -110,7 +110,8 @@ class _NewProductState extends State<NewProduct> {
                                 snapshot.data!.length, (index) => snapshot.data![index]['title']);
 
                             return Container(
-                              margin: EdgeInsets.all(dPadding),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: dPadding, horizontal: dPadding * 1.5),
                               padding: EdgeInsets.all(dPadding),
                               decoration: BoxDecoration(
                                 border: Border.all(color: white, strokeAlign: 12.5),
@@ -157,7 +158,7 @@ class _NewProductState extends State<NewProduct> {
                                     image: base64Encode(await pickedImage!.readAsBytes()),
                                     title: title.text,
                                     price: double.parse(price.text),
-                                    category: categoryId!,
+                                    category: 'categoryId!',
                                   ),
                                 );
                               } else {
@@ -347,7 +348,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                                     image: base64Encode(await pickedImage!.readAsBytes()),
                                     title: title.text,
                                     price: double.parse(price.text),
-                                    category: categoryId!,
+                                    category: 'categoryId!',
                                   ),
                                 );
                               } else {

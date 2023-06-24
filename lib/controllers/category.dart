@@ -4,9 +4,7 @@ class CategoryController extends GetxController {
   static CategoryController instance = Get.find();
 
   /* ====== Read ======*/
-  Future<List<Map<String, dynamic>>> categories() async {
-    return await Db().readData(table: 'Category');
-  }
+  Future<List<Map<String, dynamic>>> categories() async => await Db().readData(table: 'Category');
 
   /* ====== Create ======*/
   void createCategory() async {
@@ -164,4 +162,17 @@ class CategoryController extends GetxController {
       ],
     );
   }
+}
+
+class CategoryModel {
+  int id;
+  String title;
+
+  CategoryModel({required this.id, required this.title});
+
+  factory CategoryModel.fromMap(Map data) {
+    return CategoryModel(id: data['id'], title: data['title']);
+  }
+
+  Map<String, dynamic> toJson() => {'id': id, 'title': title};
 }

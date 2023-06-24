@@ -18,8 +18,7 @@ class Cart extends StatelessWidget {
             BootstrapCol(
               sizes: 'col-12',
               child: Container(
-                height: 100,
-                padding: EdgeInsets.all(dPadding),
+                padding: EdgeInsets.all(dPadding).copyWith(bottom: 0),
                 child: Text(
                   'Order Info',
                   style: TextStyle(color: white, fontSize: 24, fontWeight: FontWeight.bold),
@@ -49,11 +48,9 @@ class Cart extends StatelessWidget {
                               sizes: 'col-12',
                               child: Container(
                                 height: 125,
-                                margin: EdgeInsets.all(dPadding / 2),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  color: secondary,
-                                ),
+                                margin: EdgeInsets.only(bottom: dPadding / 2),
+                                decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(12.5)),
                                 child: Row(
                                   children: [
                                     // Image
@@ -87,6 +84,7 @@ class Cart extends StatelessWidget {
                                               product.title,
                                               style: TextStyle(
                                                   color: white, fontWeight: FontWeight.bold),
+                                              maxLines: 2,
                                             ),
 
                                             // Price

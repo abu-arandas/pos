@@ -12,24 +12,18 @@ export 'package:table_calendar/table_calendar.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:checkbox_grouped/checkbox_grouped.dart';
 
-/* ====== Components ====== */
-export 'components/constants.dart';
-export 'components/scaffold.dart';
-export 'components/input.dart';
-export 'components/widgets.dart';
-
-/* ====== Models ====== */
-export 'models/category.dart';
-export 'models/product.dart';
-export 'models/order.dart';
-export 'models/data.dart';
-
 /* ====== Controllers ====== */
 export 'controllers/binding.dart';
 export 'controllers/db.dart';
 export 'controllers/category.dart';
 export 'controllers/product.dart';
 export 'controllers/order.dart';
+
+/* ====== Components ====== */
+export 'view/components/constants.dart';
+export 'view/components/scaffold.dart';
+export 'view/components/input.dart';
+export 'view/components/widgets.dart';
 
 /* ====== Pages ====== */
 export 'main.dart';

@@ -2,13 +2,11 @@ import '/exports.dart';
 
 class ProductController extends GetxController {
   static ProductController instance = Get.find();
-  RxList<ProductModel> productList = <ProductModel>[].obs;
+
   RxList<ProductModel> cart = <ProductModel>[].obs;
 
   /* ====== Read ======*/
-  Future<List<Map<String, dynamic>>> products() async {
-    return await Db().readData(table: 'Products');
-  }
+  Future<List<Map<String, dynamic>>> products() async => await Db().readData(table: 'Products');
 
   /* ====== Cart ======*/
   void addToCart({required ProductModel product}) {
@@ -33,13 +31,10 @@ class ProductController extends GetxController {
     update();
   }
 
-  void clearCart() {
-    for (var product in cart) {
-      product.cartQuantity = 0;
-      update();
-    }
-
-    cart.clear();
+  void clearCart(ProductModel product) {
+    product.cartQuantity = 0;
+    update();
+    cart.removeWhere((element) => element.id == product.id);
   }
 
   double cartTotal() {
@@ -64,6 +59,7 @@ class ProductController extends GetxController {
           'image': product.image,
           'price': product.price,
           'category': product.category,
+          'orderId': product.orderId,
         },
       );
 
@@ -77,16 +73,7 @@ class ProductController extends GetxController {
   /* ====== Update ======*/
   void updateProduct({required ProductModel product}) {
     try {
-      Db.updateData(
-        table: 'Products',
-        item: {
-          'id': product.id,
-          'title': product.title,
-          'image': product.image,
-          'price': product.price,
-          'category': product.category,
-        },
-      );
+      Db.updateData(table: 'Products', item: product.toJson());
 
       successSnackBar('Done');
       page(page: const Setting());
@@ -133,5 +120,47 @@ class ProductController extends GetxController {
         )
       ],
     );
+  }
+}
+
+class ProductModel {
+  int id;
+  String title, image;
+  double price;
+  String category;
+  int? orderId;
+  int cartQuantity;
+
+  ProductModel({
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.price,
+    required this.category,
+    this.orderId,
+    this.cartQuantity = 0,
+  });
+
+  factory ProductModel.fromMap(Map data) {
+    return ProductModel(
+      id: data['id'],
+      title: data['title'],
+      image: data['image'],
+      price: double.parse(data['price'].toString()),
+      category: data['category'],
+      orderId: data['orderId'],
+      cartQuantity: data['cartQuantity'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'image': image,
+      'price': price,
+      'category': category,
+      'orderId': orderId,
+      'cartQuantity': cartQuantity,
+    };
   }
 }

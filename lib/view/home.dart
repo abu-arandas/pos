@@ -8,7 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int categoryIndex = -1;
+  String categoryIndex = 'all';
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
       pageName: 'Home',
       body: [
         BootstrapRow(
-          height: screenHeight(context) * 0.75,
           children: [
             // Search
             BootstrapCol(
@@ -80,7 +79,7 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         children: [
-                          categoryWidget(CategoryModel(id: -1, title: 'All')),
+                          categoryWidget(CategoryModel(id: -1, title: 'all')),
                           for (var category in snapshot.data!)
                             categoryWidget(CategoryModel.fromMap(category))
                         ],
@@ -103,7 +102,7 @@ class _HomeState extends State<Home> {
                     List<ProductModel> products = List.generate(snapshot.data!.length,
                         (index) => ProductModel.fromMap(snapshot.data![index]));
 
-                    List<ProductModel> productsList = categoryIndex == -1
+                    List<ProductModel> productsList = categoryIndex == 'all'
                         ? products
                         : products.where((element) => element.category == categoryIndex).toList();
 
@@ -115,47 +114,47 @@ class _HomeState extends State<Home> {
                           child: InkWell(
                             onTap: () =>
                                 ProductController.instance.addToCart(product: productsList[index]),
-                            child: Container(
-                              width: double.maxFinite,
-                              height: 150,
-                              margin: EdgeInsets.symmetric(vertical: dPadding),
-                              padding: EdgeInsets.all(dPadding / 2),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.5),
-                                image: DecorationImage(
-                                  image: MemoryImage(base64Decode(productsList[index].image)),
-                                  fit: BoxFit.fill,
-                                  colorFilter:
-                                      ColorFilter.mode(black.withOpacity(0.5), BlendMode.darken),
-                                ),
-                              ),
+                            child: Padding(
+                              padding: EdgeInsets.all(dPadding),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Title
-                                  Text(
-                                    productsList[index].title,
-                                    style: TextStyle(
-                                      color: white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  // Image
+                                  AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      width: double.maxFinite,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12.5),
+                                        image: DecorationImage(
+                                          image:
+                                              MemoryImage(base64Decode(productsList[index].image)),
+                                          fit: BoxFit.fill,
+                                          colorFilter: ColorFilter.mode(
+                                              black.withOpacity(0.5), BlendMode.darken),
+                                        ),
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: dPadding),
 
                                   // Title
-                                  Text(
-                                    '${productsList[index].price} \$',
-                                    style: TextStyle(
-                                      color: white,
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 16,
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: dPadding / 2),
+                                    child: Text(
+                                      productsList[index].title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(fontWeight: FontWeight.bold),
+                                      maxLines: 2,
                                     ),
                                   ),
+
+                                  // Title
+                                  Text('${productsList[index].price} \$'),
                                 ],
                               ),
                             ),
@@ -179,13 +178,13 @@ class _HomeState extends State<Home> {
     return Padding(
       padding: EdgeInsets.only(left: dPadding),
       child: ElevatedButton(
-        onPressed: () => setState(() => categoryIndex = category.id),
+        onPressed: () => setState(() => categoryIndex = category.title),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith(
             (states) => states.contains(MaterialState.hovered) ||
                     states.contains(MaterialState.focused) ||
                     states.contains(MaterialState.pressed) ||
-                    categoryIndex == category.id
+                    categoryIndex == category.title
                 ? primary
                 : white,
           ),
@@ -193,12 +192,13 @@ class _HomeState extends State<Home> {
             (states) => states.contains(MaterialState.hovered) ||
                     states.contains(MaterialState.focused) ||
                     states.contains(MaterialState.pressed) ||
-                    categoryIndex == category.id
+                    categoryIndex == category.title
                 ? white
                 : primary,
           ),
         ),
-        child: Text(category.title),
+        child:
+            Text(category.title.toLowerCase(), style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
     );
   }

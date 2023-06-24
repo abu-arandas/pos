@@ -3,22 +3,26 @@ import '/exports.dart';
 class Bind implements Bindings {
   @override
   void dependencies() {
-    Get.put(AuthControlle());
+    Get.put(AuthController());
     Get.put(CategoryController());
     Get.put(ProductController());
     Get.put(OrderController());
   }
 }
 
-class AuthControlle extends GetxController {
-  static AuthControlle instance = Get.find();
-  bool logged = true;
+class AuthController extends GetxController with StateMixin<bool> {
+  static AuthController instance = Get.find();
+
+  @override
+  void onInit() {
+    super.onInit();
+    change(false, status: RxStatus.success());
+  }
 
   /* === Sign In === */
   void signIn({required String email, required String password}) {
     if (email == 'admin@pos.com' && password == 'adminPOS') {
-      logged = true;
-      update();
+      change(true, status: RxStatus.success());
       successSnackBar('Welcome Back');
     } else {
       errorSnackBar('Wrong email or password');
@@ -27,8 +31,7 @@ class AuthControlle extends GetxController {
 
   /* === Sign Out === */
   void signOut() {
-    logged = false;
-    update();
+    change(false, status: RxStatus.success());
     successSnackBar('Good Bye');
   }
 }
